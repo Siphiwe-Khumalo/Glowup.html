@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GlowUP Smart Lamp</title>
+  <style>
+    /* Base reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1696399316248-78f2b67768b0?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1600') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Glass effect container */
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .product-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .product-header h1 {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #00b4db, #0083b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .product-header p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.5rem;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 400px;
+      border-radius: 15px;
+      object-fit: cover;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+      transition: transform 0.6s ease, box-shadow 0.4s ease;
+    }
+
+    .product-image:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feature:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-6px);
+    }
+
+    .feature h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      color: #00b4db;
+    }
+
+    .feature p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .cta {
+      text-align: center;
+    }
+
+    .cta button {
+      background: linear-gradient(135deg, #00b4db, #0083b0);
+      color: #fff;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 15px rgba(0, 180, 219, 0.5);
+    }
+
+    .cta button:hover {
+      background: linear-gradient(135deg, #0083b0, #00b4db);
+      box-shadow: 0 0 25px rgba(0, 180, 219, 0.8);
+      transform: translateY(-3px);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeInModal 0.5s ease;
+    }
+
+    @keyframes fadeInModal {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 600px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content h2 {
+      color: #00b4db;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .close-btn {
+      background: linear-gradient(135deg, #00b4db, #0083b0);
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .close-btn:hover {
+      box-shadow: 0 0 15px rgba(0, 180, 219, 0.7);
+    }
+
+    /* Fade-in on scroll */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+  animation: fadeIn 1.2s ease;
+}
+
+footer strong {
+  background: linear-gradient(135deg, #00b4db, #0083b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="product-header fade-section">
+      <h1>GlowUP Smart Lamp</h1>
+      <p>Light up your space with style and intelligence</p>
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1582719478171-2f6f9c6c6f1b?auto=format&fit=crop&w=1000&q=80" alt="Smart Lamp" class="product-image fade-section" />
+
+    <div class="features fade-section">
+      <div class="feature" onclick="openModal('Voice Control')">
+        <h3>🎙️ Voice Control</h3>
+        <p>Adjust brightness and color with your voice using Alexa or Google Assistant.</p>
+      </div>
+      <div class="feature" onclick="openModal('Mood Lighting')">
+        <h3>🌈 Mood Lighting</h3>
+        <p>Set the perfect ambiance with over 16 million color options.</p>
+      </div>
+      <div class="feature" onclick="openModal('Energy Efficient')">
+        <h3>⚡ Energy Efficient</h3>
+        <p>Consumes 80% less energy than regular lamps with smart scheduling.</p>
+      </div>
+      <div class="feature" onclick="openModal('Mobile App')">
+        <h3>📱 Mobile App</h3>
+        <p>Take full control from anywhere through our dedicated mobile app.</p>
+      </div>
+    </div>
+
+    <div class="cta fade-section">
+      <button onclick="openModal('Buy Now')">Buy Now</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="promoModal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Feature</h2>
+      <p id="modalDescription">Details about the feature will appear here.</p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("promoModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+
+    const featureDetails = {
+      "Voice Control": "Use Alexa or Google Assistant to adjust brightness, color, and timing with a simple voice command.",
+      "Mood Lighting": "Transform your room’s atmosphere with 16 million vibrant color options to fit every mood.",
+      "Energy Efficient": "Engineered for smart living — save up to 80% energy and enjoy longer LED lifespan.",
+      "Mobile App": "Experience total control from your smartphone — schedule, dim, and sync with your routine.",
+      "Buy Now": "Available now for R899. Enjoy free nationwide delivery. Limited stock!"
+    };
+
+    function openModal(feature) {
+      modalTitle.textContent = feature;
+      modalDescription.textContent = featureDetails[feature] || "More info coming soon.";
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    // Fade-in scroll animation
+    const fadeSections = document.querySelectorAll(".fade-section");
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    fadeSections.forEach(section => observer.observe(section));
+  </script>
+  <!-- Add this right before the closing </body> tag -->
+  <footer class="fade-section">
+    <p>© 2025 GlowUP Technologies | Designed & Coded by <strong>Ronnie</strong></p>
+  </footer>
+</body>
+</html>
